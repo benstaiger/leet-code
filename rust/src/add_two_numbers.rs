@@ -8,39 +8,24 @@
 // Definition for singly-linked list.
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {
-  pub val: i32,
-  pub next: Option<Box<ListNode>>
+    pub val: i32,
+    pub next: Option<Box<ListNode>>,
 }
 
 impl ListNode {
-  #[inline]
-  fn new(val: i32) -> Self {
-    ListNode {
-      next: None,
-      val
+    #[inline]
+    fn new(val: i32) -> Self {
+        ListNode { next: None, val }
     }
-  }
 }
 
 struct Solution;
 
 impl Solution {
-    fn create_num_stack(list: Option<Box<ListNode>>) -> Vec<i32> {
-        let mut list = list;
-        let mut result = Vec::new();
-        loop {
-            match list {
-                Some(node) => {
-                    result.push(node.val);
-                    list = node.next;
-                }
-                None => { break; }
-            }
-        }
-        result
-    }
-
-    pub fn add_two_numbers(l1: Option<Box<ListNode>>, l2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    pub fn add_two_numbers(
+        l1: Option<Box<ListNode>>,
+        l2: Option<Box<ListNode>>,
+    ) -> Option<Box<ListNode>> {
         let mut p1 = l1;
         let mut p2 = l2;
 
@@ -48,8 +33,18 @@ impl Solution {
         let mut tail: &mut Option<Box<ListNode>> = &mut head;
         let mut remainder = 0;
         while p1.is_some() || p2.is_some() || remainder > 0 {
-            let v1 = if let Some(node) = p1 { p1 = node.next; node.val } else { 0 };
-            let v2 = if let Some(node) = p2 { p2 = node.next; node.val } else { 0 };
+            let v1 = if let Some(node) = p1 {
+                p1 = node.next;
+                node.val
+            } else {
+                0
+            };
+            let v2 = if let Some(node) = p2 {
+                p2 = node.next;
+                node.val
+            } else {
+                0
+            };
             let sum = v1 + v2 + remainder;
             let v = sum % 10;
             remainder = if sum >= 10 { 1 } else { 0 };
@@ -75,7 +70,7 @@ mod test {
         }
         result
     }
-    
+
     #[test]
     fn example1() {
         // Input: l1 = [2,4,3], l2 = [5,6,4]
@@ -106,9 +101,9 @@ mod test {
     fn example3() {
         // Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
         // Output: [8,9,9,9,0,0,0,1]
-        let l1 = create_list(&vec![9,9,9,9,9,9,9]);
-        let l2 = create_list(&vec![9,9,9,9]);
-        let expected = create_list(&vec![8,9,9,9,0,0,0,1]);
+        let l1 = create_list(&vec![9, 9, 9, 9, 9, 9, 9]);
+        let l2 = create_list(&vec![9, 9, 9, 9]);
+        let expected = create_list(&vec![8, 9, 9, 9, 0, 0, 0, 1]);
         let result = Solution::add_two_numbers(l1, l2);
         println!("{:?}\n{:?}", &expected, &result);
         assert!(result == expected);
